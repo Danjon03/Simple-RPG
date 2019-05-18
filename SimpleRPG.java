@@ -20,13 +20,10 @@ public class SimpleRPG
 
 	
 
-
-	public  static JFrame mainFrame = new JFrame();
+// JFrame related Variables
 	
+	 public  static JFrame mainFrame = new JFrame();
 	 public  static JPanel panel = new JPanel();
-	
-	 
-	
 	 public static JTextArea area = new JTextArea();
 	 public static JTextArea targetArea = new JTextArea();
 	 public static JTextArea stats = new JTextArea();
@@ -37,21 +34,19 @@ public class SimpleRPG
 	
 	
 	
+	 //objects
+	 public static You you = new You(10, 3, 2, "Blunt Sword", 4, "Mini Blaster", 5, 0, 0, 10);
+	 public static Dungeon1 dungeon = new Dungeon1("Sharp Sword", 10, "You enter a cave and see a sign. it reads... \n"
+			 + " Beware traveler many dangers await you. Pass and you will be closer to freedom. You look down and pick up a weapon. "
+			 + "You replace your sword with a Sharp Sword \n"
+			 + "You instantly look up to see a monster.", "Small Blaster", new Monsters(40, 8, "Flame Ogre", true));
+	 public static ArrayList<Monsters> monsterArray = new ArrayList<Monsters>();
 	 
-	 public static You you = new You(100, 3, 2, "Blunt Sword", 4, "Mini Blaster", 5, 0, 0, 10);
 	
+	//strings ints ect
 	 
-	
-
-	 
-	
-	
-	 public static String targetedEnemy = "Goblin";
-	 
-	 public static boolean dead = true;
 	 public static boolean inDungeon = false;
-	
-	
+	 public static int numberOfEnemiesInArea = 5;
 	 
 	 public static void main (String[] args)
 	 {
@@ -87,7 +82,7 @@ public class SimpleRPG
 		 targetArea.setLocation(50, 270);
 		 targetArea.setSize(200, 50);
 		 panel.add(targetArea);
-		 targetArea.setText(monsterArray[0].getName());
+		 targetArea.setText(monsterArray.get(0).getName());
 		 
 		 showStats();
 	 }
@@ -120,22 +115,16 @@ public class SimpleRPG
 		 attackWeapon1.setLocation(50, 100);
 		 attackWeapon1.setText(You.getWeapon1());
 		
-		 attackWeapon1.setEnabled(dead);
+		 attackWeapon1.setEnabled(true);
 		 panel.add(attackWeapon1);
 		 attackWeapon1.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
 		   {
 			   
-			 if(inDungeon == true)
-			 {
-				 dungeon.attackMonsterinDungeon(1);
-				 
-			 }
-			 else
-			 {
+			 
 				   attackMonster(1);
-			 } 
+			 
 		   }
 		   
 		 });
@@ -148,30 +137,13 @@ public class SimpleRPG
 		 attackWeapon2.setLocation(250, 100);
 		 attackWeapon2.setText(You.getWeapon2());
 		 
-		 attackWeapon2.setEnabled(dead);
+		 attackWeapon2.setEnabled(true);
 		 panel.add(attackWeapon2);
 		 attackWeapon2.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
-		   {
-			   
-				  
-			   
-			   
-			   
-			  
-			   if(inDungeon == true)
-				 {
-					 dungeon.attackMonsterinDungeon(2);
-					 
-				 }
-				 else
-				 {
-					   attackMonster(2);
-				 } 
-			   
-			   
-		    
+		   {			   				  			  			
+					   attackMonster(2);						   		    
 		   }
 		 });
 	
@@ -229,19 +201,10 @@ public class SimpleRPG
 	public static  int currentEnemy = 0;
 	public static int yourDamage;
 	
-	public static Dungeon1 dungeon = new Dungeon1("Sharp Sword", 10, "You enter a cave and see a sign. it reads... \n"
-			 + " Beware traveler many dangers await you. Pass and you will be closer to freedom. You look down and pick up a weapon. "
-			 + "You replace your sword with a Sharp Sword \n"
-			 + "You instantly look up to see a monster.", "Small Blaster", new Monsters(40, 8, "Flame Ogre", true));
 	
 	
 	public static void attackMonster(int button)
-	{
-		
-		
-		
-		
-				
+	{			
 				if(button == 1)
 				{
 					yourDamage = you.getWeap1At() + D4() + you.getAttack();
@@ -251,27 +214,37 @@ public class SimpleRPG
 					yourDamage = you.getWeap2At() + D4() + you.getAttack();
 				}
 				
-				if(currentEnemy == monsterArray.length - 1)
+				if(currentEnemy == monsterArray.size() - 1)
 				{
-					area.setText("You Win");
-					end();
+					if(inDungeon == true)
+					{
+						fightBoss();
+					}
+					else
+					{
+						area.setText(dungeon.getEntryText());
+						attackWeapon1.setText(dungeon.getEnterWeapon());
+						you.setWeap1At(6);
+						currentEnemy = 0;
+						numberOfEnemiesInArea = dungeon.getEnemyNum();
+						inDungeon = true;
+						createNewStage();
+					
+					
+					}
 				}
 				else
 				{
+					
 				//sets the monsters HP
-				monsterArray[currentEnemy].setHP( monsterArray[currentEnemy].getHP() - yourDamage);
+					monsterArray.get(currentEnemy).setHP(monsterArray.get(currentEnemy).getHP() - yourDamage);
 					
 				//if monster is dead move on to the next monster
-					if(monsterArray[currentEnemy].getHP() <= 0)
+					if(monsterArray.get(currentEnemy).getHP() <= 0)
 					{
-						
 						currentEnemy++;
-					
-						
-							targetArea.setText(monsterArray[currentEnemy].getName());
-							area.setText("You killed the " + monsterArray[currentEnemy - 1].getName());
-							
-						
+						targetArea.setText(monsterArray.get(currentEnemy).getName());
+						area.setText("You killed the " + monsterArray.get(currentEnemy - 1).getName());
 					}
 					else
 					{
@@ -279,7 +252,7 @@ public class SimpleRPG
 					}
 				
 				}
-				}
+	}
 				
 				
 		public static void end()
@@ -298,20 +271,20 @@ public class SimpleRPG
 		
 			if(D20() >= 90)
 			{
-				area.setText("You dealt: " + yourDamage + " and the " + monsterArray[currentEnemy].getName() + " missed");
+				area.setText("You dealt: " + yourDamage + " and the " + monsterArray.get(currentEnemy).getName() + " missed");
 			}
 			else
 			{
-				you.setHP(  you.getHP() - monsterArray[currentEnemy].getAttack() + you.getDefense());
-				area.setText("You dealt: " + yourDamage + " and the  " + monsterArray[currentEnemy].getName() + 
-						" dealt " +(monsterArray[currentEnemy].getAttack() - you.getDefense()) + " damage" );
+				you.setHP(  you.getHP() - monsterArray.get(currentEnemy).getAttack() + you.getDefense());
+				area.setText("You dealt: " + yourDamage + " and the  " + monsterArray.get(currentEnemy).getName() + 
+						" dealt " +(monsterArray.get(currentEnemy).getAttack() - you.getDefense()) + " damage" );
 			}
 			
 				showStats();
 
 			if(you.getHP() <= 0)
 			{
-				area.setText("You were killed by a " + monsterArray[currentEnemy].getName() );
+				area.setText("You were killed by a " + monsterArray.get(currentEnemy).getName() );
 				attackWeapon1.setEnabled(false);
 				attackWeapon2.setEnabled(false);
 				
@@ -321,65 +294,81 @@ public class SimpleRPG
 	
 	
 	
-	   public static Monsters[] monsterArray = new Monsters[5];
+	  
 	 
-	 
-	 
+	 //good for beta version
 	public static void createNewStage()
 	{
 		
-		for(int i = 0; i < monsterArray.length; i++)
+		for(int i = 0; i < numberOfEnemiesInArea; i++)
 		{
 			Random monsterChoose = new Random();
 			int r = monsterChoose.nextInt(99);
 			
-			if(r <= 50)
+			if(inDungeon == true)
 			{
-				monsterArray[i] = new Monsters(10, 5, "Goblin", true);
-				System.out.println("new Goblin");
+				System.out.println("Dungeon");
+				if(r <= 40)
+				{
+					monsterArray.add( new Monsters(10, 5, "Goblin", true));
+					System.out.println("new Goblin");
+				}
+				else if(r > 40 && r <= 70 )
+				{
+					monsterArray.add( new Monsters(10, 5, "Werewolf", true));
+					System.out.println("new Werewolf");
+				}
+				else
+				{
+					monsterArray.add( new Monsters(15, 5, "Mummy", true));
+					System.out.println("new Mummy");	
+				}
 			}
-			else if(r > 50 && r <= 100)
+			else
 			{
-				monsterArray[i] = new Monsters(10, 5, "Werewolf", true);
-				System.out.println("new Werewolf");
-			}
-			
+				System.out.println("Stage");
+				if(r <= 50)
+				{
+					monsterArray.add( new Monsters(10, 5, "Goblin", true));
+					System.out.println("new Goblin");
+				}
+				else if(r > 50 && r <= 100)
+				{
+					monsterArray.add( new Monsters(10, 5, "Werewolf", true));
+					System.out.println("new Werewolf");
+				}
+			}	
 		}
+		
 
 		
 			
 	}
 
-	/*
-	public static void monsterAttackinDungeon()
+	
+	public static int times = 0;
+	public static  void fightBoss()
 	{
 		
-		if(D20() >= 90)
+		if(times == 0)
 		{
-			area.setText("You dealt: " + yourDamage + " and the " + Dungeon1.dungonMonsterArray[currentEnemy].getName() + " missed");
+			area.setText("You walk into the next room and see a giant Flame Ogre tower above you. You must kill it to escape");
+			targetArea.setText(Dungeon1.getBoss().getName());
 		}
+		
+		
+		
 		else
 		{
-			you.setHP(  you.getHP() - monsterArray[currentEnemy].getAttack() + you.getDefense());
-			area.setText("You dealt: " + yourDamage + " and the  " + Dungeon1.dungonMonsterArray[currentEnemy].getName() + " dealt " + (Dungeon1.dungonMonsterArray[currentEnemy].getAttack() - you.getDefense()) + " damage" );
-		}
 		
-			showStats();
-
-
-	}
-	
-	
-	public  void fightBoss()
-	{
-		targetArea.setText(Dungeon1.getBoss().getName());
 		Dungeon1.getBoss().setHP(Dungeon1.getBoss().getHP() - yourDamage);
 		
 		if(Dungeon1.getBoss().getHP() <= 0)
 		{
-			currentEnemy++;
+			
 			
 			area.setText("You killed the " + Dungeon1.getBoss().getName() + " you walk outside and take a deep breath. You have escaped.");
+			end();
 			
 		}
 		else
@@ -395,11 +384,12 @@ public class SimpleRPG
 				showStats();
 			}
 		}
+		}
+		times++;
 		
-		
-	}
+		}
 	
-	*/
+	
 	
 	
 
