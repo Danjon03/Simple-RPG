@@ -2,6 +2,7 @@ package simpleRPG;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -9,12 +10,20 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class SimpleRPG {
+public class SimpleRPG 
+{
 
 	
-	 public static  JFrame mainFrame = new JFrame();
 	
-	 public static  JPanel panel = new JPanel();
+	
+
+
+	
+
+
+	public  static JFrame mainFrame = new JFrame();
+	
+	 public  static JPanel panel = new JPanel();
 	
 	 
 	
@@ -26,18 +35,16 @@ public class SimpleRPG {
 	 public static  JButton attackWeapon1 = new JButton();
 	 
 	
-	 public static String Weapon1 = You.getWeapon1();
-	 public static String Weapon2 = You.getWeapon2();
+	
 	
 	 
-	 public static You you = new You(10, 3, 2, "Blunt Sword", 4, "Mini Blaster", 5, 0, 0, 10);
-	 public Goblin goblin = new Goblin(10, 5); 
-	 
+	 public static You you = new You(100, 3, 2, "Blunt Sword", 4, "Mini Blaster", 5, 0, 0, 10);
 	
 	 
+	
 
-	 public static int KillCount = 0;
-	 public static int lastButton;
+	 
+	
 	
 	 public static String targetedEnemy = "Goblin";
 	 
@@ -46,18 +53,15 @@ public class SimpleRPG {
 	
 	
 	 
-	 public static void main(String[] args) {
-		
-		 
-		setup();
-		//sets up the JFrame 
-		
+	 public static void main (String[] args)
+	 {
+		 setup();
 	 }
 	
 	
 	public static void setup()
 	 {
-		
+		createNewStage();
 		 mainFrame.setVisible(true);
 		 mainFrame.setSize(800, 800);
 		 mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,7 +87,7 @@ public class SimpleRPG {
 		 targetArea.setLocation(50, 270);
 		 targetArea.setSize(200, 50);
 		 panel.add(targetArea);
-		 targetArea.setText(targetedEnemy);
+		 targetArea.setText(monsterArray[0].getName());
 		 
 		 showStats();
 	 }
@@ -115,23 +119,23 @@ public class SimpleRPG {
 		 attackWeapon1.setSize(150, 50);
 		 attackWeapon1.setLocation(50, 100);
 		 attackWeapon1.setText(You.getWeapon1());
-		 System.out.println(You.getWeapon1());
+		
 		 attackWeapon1.setEnabled(dead);
 		 panel.add(attackWeapon1);
 		 attackWeapon1.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
 		   {
-			   lastButton = 1;
-		    
-			   if(inDungeon == true)
-			   {
-				   FightinDungeon.main();
-			   }
-			   else
-			   {
-				   attack(1);
-			   }
+			   
+			 if(inDungeon == true)
+			 {
+				 dungeon.attackMonsterinDungeon(1);
+				 
+			 }
+			 else
+			 {
+				   attackMonster(1);
+			 } 
 		   }
 		   
 		 });
@@ -143,22 +147,30 @@ public class SimpleRPG {
 		 attackWeapon2.setSize(150, 50);
 		 attackWeapon2.setLocation(250, 100);
 		 attackWeapon2.setText(You.getWeapon2());
-		 System.out.println(You.getWeapon2());
+		 
 		 attackWeapon2.setEnabled(dead);
 		 panel.add(attackWeapon2);
 		 attackWeapon2.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
 		   {
-			   lastButton = 2;
+			   
+				  
+			   
+			   
+			   
+			  
 			   if(inDungeon == true)
-			   {
-				   	FightinDungeon.main();
-			   }
-			   else
-			   {
-				   attack(2);
-			   }
+				 {
+					 dungeon.attackMonsterinDungeon(2);
+					 
+				 }
+				 else
+				 {
+					   attackMonster(2);
+				 } 
+			   
+			   
 		    
 		   }
 		 });
@@ -175,16 +187,15 @@ public class SimpleRPG {
 		 {
 		   public void actionPerformed(ActionEvent e)
 		   {
-			   if(You.getPotion() == 0)
+			   if(you.getPotion() == 0)
 			   {
 				   area.setText("You don't have any more potions");
 			   }
 			   else
 			   {
-			   You.setPotion(You.getPotion() - 1);
-			   You.setHP(10);
-			   stats.setText("HP: " + You.getHP() + "\n" + "Defense Modifier: " + You.getDefense() + "\n" + "Attack Modifier: " 
-						+ You.getAttack() + "\n" + "Number of Potions: " + You.getPotion());
+			   you.setPotion(you.getPotion() - 1);
+			   you.setHP(10);
+			showStats();
 		   
 			   }
 			   }
@@ -205,8 +216,8 @@ public class SimpleRPG {
 		stats.setLocation(50, 350);
 		stats.setSize(200, 300);
 		panel.add(stats);
-		stats.setText("HP: " + You.getHP() + "\n" + "Defense Modifier: " + You.getDefense() + "\n" + "Attack Modifier: " 
-						+ You.getAttack() + "\n" + "Number of Potions: " + You.getPotion());
+		stats.setText("HP: " + you.getHP() + "\n" + "Defense Modifier: " + you.getDefense() + "\n" + "Attack Modifier: " 
+						+ you.getAttack() + "\n" + "Number of Potions: " + you.getPotion());
 		
 		
 	
@@ -215,311 +226,180 @@ public class SimpleRPG {
 	}
 	
 	
+	public static  int currentEnemy = 0;
+	public static int yourDamage;
+	
+	public static Dungeon1 dungeon = new Dungeon1("Sharp Sword", 10, "You enter a cave and see a sign. it reads... \n"
+			 + " Beware traveler many dangers await you. Pass and you will be closer to freedom. You look down and pick up a weapon. "
+			 + "You replace your sword with a Sharp Sword \n"
+			 + "You instantly look up to see a monster.", "Small Blaster", new Monsters(40, 8, "Flame Ogre", true));
 	
 	
-	public static void attack(int button)
+	public static void attackMonster(int button)
 	{
 		
-		if(KillCount == 5)
-		{
-			
-			area.setText(Dungeon1.getEntryText());
-			You.setWeap1At(8);
-			You.setWeapon1("Sharp Sword");
-			attackWeapon1.setText("Sharp Sword");
-			inDungeon = true;
 		
 		
-			  area.setText(Dungeon1.getEntryText());
-			 
+		
 				
-		}
-		
-		else
-		{
-		if(targetedEnemy == "Goblin") 
-		{
-			
-			attackGoblin(button);	
-		}
-		else if(targetedEnemy == "Werewolf")
-		{
-			attackWerwolf(button);
-		}	
-		else
-		{
-			area.setText("You Are Not Targeting an Enemy");
-		}	
-	}
-	}
-
-	
-	public static void createNewEnemy()
-	{
-		Goblin.reset();
-		Werwolf.reset();
-		Mummy.reset();
-		
-		KillCount++;
-			System.out.println(KillCount);
-			
-				Random rand = new Random();
-				
-				int n = rand.nextInt(99);
-				if(n <= 50)
+				if(button == 1)
 				{
-					targetedEnemy = "Werewolf";
+					yourDamage = you.getWeap1At() + D4() + you.getAttack();
+				}
+				else
+				{
+					yourDamage = you.getWeap2At() + D4() + you.getAttack();
+				}
+				
+				if(currentEnemy == monsterArray.length - 1)
+				{
+					area.setText("You Win");
+					end();
+				}
+				else
+				{
+				//sets the monsters HP
+				monsterArray[currentEnemy].setHP( monsterArray[currentEnemy].getHP() - yourDamage);
 					
+				//if monster is dead move on to the next monster
+					if(monsterArray[currentEnemy].getHP() <= 0)
+					{
+						
+						currentEnemy++;
+					
+						
+							targetArea.setText(monsterArray[currentEnemy].getName());
+							area.setText("You killed the " + monsterArray[currentEnemy - 1].getName());
+							
+						
+					}
+					else
+					{
+						monsterAttack();
+					}
+				
 				}
-				else if(n >= 50)
-				{
-					targetedEnemy = "Goblin";
 				}
-				targetArea.setText(targetedEnemy);
+				
+				
+		public static void end()
+		{
+			attackWeapon2.setEnabled(false);
+			attackWeapon1.setEnabled(false);
+		}
+		
+			
+	
+
+	public static void monsterAttack()
+	{
+		
+	
+		
+			if(D20() >= 90)
+			{
+				area.setText("You dealt: " + yourDamage + " and the " + monsterArray[currentEnemy].getName() + " missed");
 			}
-		
-	
-	
-	
-	public static void attackGoblin(int button)
-	{
-		if(button == 1)
-		{
-			int diceRoll = You.getWeap1At() + D4();
+			else
+			{
+				you.setHP(  you.getHP() - monsterArray[currentEnemy].getAttack() + you.getDefense());
+				area.setText("You dealt: " + yourDamage + " and the  " + monsterArray[currentEnemy].getName() + 
+						" dealt " +(monsterArray[currentEnemy].getAttack() - you.getDefense()) + " damage" );
+			}
 			
-			Goblin.setHP(Goblin.getHP() - diceRoll);
-			
-				if(Goblin.getHP() <= 0)
-				{
-					area.setText("You Killed the Goblin Now there is another monster Attacking You");
-					if(inDungeon == true)
-					{
-						FightinDungeon.createNewEnemyInDungeon();
-					}
-					else
-					{
-					createNewEnemy();
-					}
-				}
-				else
-				{
-					You.setHP( You.getHP() - (Goblin.getAttack() - You.getDefense()));
-					if(You.getHP() <= 0)
-					{
-						area.setText("You Died, Game Over");
-						dead = false;
-						addButtons();
-					}
-					else
-					{
-					area.setText( "You Dealt " + diceRoll + " Damage" + "\n" + "You took " + (Goblin.getAttack() - You.getDefense()) + " Damage");
-					}
-				}
-		
-		
-		}
-		else
-		{
-			int diceRoll = You.getWeap2At() + D4();
-			Goblin.setHP(Goblin.getHP() - diceRoll);
-			
-				if(Goblin.getHP() <= 0)
-				{
-					area.setText("You Killed the Goblin Now there is another monster Attacking You");
-					
-					area.setText("You Killed the Goblin Now there is another monster Attacking You");
-					if(inDungeon == true)
-					{
-						FightinDungeon.createNewEnemyInDungeon();
-					}
-					else
-					{
-					createNewEnemy();
-					}
-				}
-				else
-				{
-					You.setHP( You.getHP() - (Goblin.getAttack() - You.getDefense()));
+				showStats();
 
-					if(You.getHP() <= 0)
-					{
-						area.setText("You Died, Game Over");
-						dead = false;
-						addButtons();
-					}
-					else
-					{
-					area.setText( "You Dealt " + diceRoll + " Damage" + "\n" + "You took " + (Goblin.getAttack() - You.getDefense()) + " Damage");
-					}
-				}
-			
-		}
-		stats.setText("HP: " + You.getHP() + "\n" + "Defense Modifier: " + You.getDefense() + "\n" + "Attack Modifier: " 
-				+ You.getAttack() + "\n" + "Number of Potions: " + You.getPotion());
-	}
-	
-	
-	public static void attackWerwolf(int button)
-	{
-		if(button == 1)
-		{
-			int diceRoll = You.getWeap2At() + D4();
-			
-			Werwolf.setHP(Werwolf.getHP() - diceRoll);
-			
-				if(Werwolf.getHP() <= 0)
-				{
-					area.setText("You Killed the Werewolf Now there is another monster Attacking You");
-					
-					
-					if(inDungeon == true)
-					{
-						FightinDungeon.createNewEnemyInDungeon();
-						System.out.print("Enemy Killed in Dungeon");
-					}
-					else
-					{
-					createNewEnemy();
-					}
-				}
-				else
-				{
-					You.setHP( You.getHP() - (Werwolf.getAttack() - You.getDefense()));
-
-					if(You.getHP() <= 0)
-					{
-						area.setText("You Died, Game Over");
-						dead = false;
-						addButtons();
-					}
-					else
-					{
-					area.setText( "You Dealt " + diceRoll + " Damage" + "\n" + "You took " + (Werwolf.getAttack() - You.getDefense()) + " Damage");
-					}
-				}
-		
+			if(you.getHP() <= 0)
+			{
+				area.setText("You were killed by a " + monsterArray[currentEnemy].getName() );
+				attackWeapon1.setEnabled(false);
+				attackWeapon2.setEnabled(false);
 				
-		}
-		else
-		{
-			int diceRoll = You.getWeap2At() + D4();
-			Werwolf.setHP(Werwolf.getHP() - diceRoll);
-			
-				if(Werwolf.getHP() <= 0)
-				{
-					area.setText("You Killed the Werwolf Now there is another monster Attacking You");
-					
-					
-					if(inDungeon == true)
-					{
-						FightinDungeon.createNewEnemyInDungeon();
-					}
-					else
-					{
-						createNewEnemy();
-					}
-				}
-				else
-				{
-					You.setHP( You.getHP() - (Werwolf.getAttack() - You.getDefense()));
-					if(You.getHP() <= 0)
-					{
-						area.setText("You Died, Game Over");
-						dead = false;
-						addButtons();
-					}
-					else
-					{
-					area.setText( "You Dealt " + diceRoll + " Damage" + "\n" + "You took " + (Goblin.getAttack() - You.getDefense()) + " Damage");
-					}
-				}
-			
-		}
-		stats.setText("HP: " + You.getHP() + "\n" + "Defense Modifier: " + You.getDefense() + "\n" + "Attack Modifier: " 
-				+ You.getAttack() + "\n" + "Number of Potions: " + You.getPotion());
-	}
-	
-	public static void attackMummy(int button)
-	{
-		if(button == 1)
-		{
-			int diceRoll = You.getWeap1At() + D4();
-			
-			Mummy.setHP(Mummy.getHP() - diceRoll);
-			
-				if(Mummy.getHP() <= 0)
-				{
-					area.setText("You Killed the Mummy Now there is another monster Attacking You");
-					
-					if(inDungeon == true)
-					{
-						FightinDungeon.createNewEnemyInDungeon();
-					}
-					else
-					{
-					createNewEnemy();
-					}
-				}
-				else
-				{
-					You.setHP( You.getHP() - (Mummy.getAttack() - You.getDefense()));
-
-					if(You.getHP() <= 0)
-					{
-						area.setText("You Died, Game Over");
-						dead = false;
-						addButtons();
-					}
-					else
-					{
-					area.setText( "You Dealt " + diceRoll + " Damage" + "\n" + "You took " + (Mummy.getAttack() - You.getDefense()) + " Damage");
-					}
-				}
-		
 				
+		}	
+	}
+	
+	
+	
+	   public static Monsters[] monsterArray = new Monsters[5];
+	 
+	 
+	 
+	public static void createNewStage()
+	{
+		
+		for(int i = 0; i < monsterArray.length; i++)
+		{
+			Random monsterChoose = new Random();
+			int r = monsterChoose.nextInt(99);
+			
+			if(r <= 50)
+			{
+				monsterArray[i] = new Monsters(10, 5, "Goblin", true);
+				System.out.println("new Goblin");
+			}
+			else if(r > 50 && r <= 100)
+			{
+				monsterArray[i] = new Monsters(10, 5, "Werewolf", true);
+				System.out.println("new Werewolf");
+			}
+			
+		}
+
+		
+			
+	}
+
+	/*
+	public static void monsterAttackinDungeon()
+	{
+		
+		if(D20() >= 90)
+		{
+			area.setText("You dealt: " + yourDamage + " and the " + Dungeon1.dungonMonsterArray[currentEnemy].getName() + " missed");
 		}
 		else
 		{
-			int diceRoll = You.getWeap2At() + D4();
-			Mummy.setHP(Mummy.getHP() - diceRoll);
-			
-				if(Mummy.getHP() <= 0)
-				{
-					area.setText("You Killed the Werwolf Now there is another monster Attacking You");
-					
-					if(inDungeon == true)
-					{
-						FightinDungeon.createNewEnemyInDungeon();
-					}
-					else
-					{
-					createNewEnemy();
-					}
-				}
-				else
-				{
-					You.setHP( You.getHP() - (Mummy.getAttack() - You.getDefense()));
-					if(You.getHP() <= 0)
-					{
-						area.setText("You Died, Game Over");
-						dead = false;
-						addButtons();
-					}
-					else
-					{
-					area.setText( "You Dealt " + diceRoll + " Damage" + "\n" + "You took " + (Mummy.getAttack() - You.getDefense()) + " Damage");
-					}
-				}
-			
+			you.setHP(  you.getHP() - monsterArray[currentEnemy].getAttack() + you.getDefense());
+			area.setText("You dealt: " + yourDamage + " and the  " + Dungeon1.dungonMonsterArray[currentEnemy].getName() + " dealt " + (Dungeon1.dungonMonsterArray[currentEnemy].getAttack() - you.getDefense()) + " damage" );
 		}
-		stats.setText("HP: " + You.getHP() + "\n" + "Defense Modifier: " + You.getDefense() + "\n" + "Attack Modifier: " 
-				+ You.getAttack() + "\n" + "Number of Potions: " + You.getPotion());
+		
+			showStats();
+
 
 	}
 	
 	
-
+	public  void fightBoss()
+	{
+		targetArea.setText(Dungeon1.getBoss().getName());
+		Dungeon1.getBoss().setHP(Dungeon1.getBoss().getHP() - yourDamage);
+		
+		if(Dungeon1.getBoss().getHP() <= 0)
+		{
+			currentEnemy++;
+			
+			area.setText("You killed the " + Dungeon1.getBoss().getName() + " you walk outside and take a deep breath. You have escaped.");
+			
+		}
+		else
+		{
+			if(D4() >= 90)
+			{
+				area.setText("You dodged the " + Dungeon1.getBoss().getName() + "'s attack. You dealt " + yourDamage + " damage");
+			}
+			else
+			{
+				you.setHP(you.getHP() - Dungeon1.getBoss().getAttack());
+				area.setText("You took " + Dungeon1.getBoss().getAttack() + " from the Flame Ogre and you dealt " + yourDamage + " damage" );
+				showStats();
+			}
+		}
+		
+		
+	}
 	
+	*/
 	
 	
 

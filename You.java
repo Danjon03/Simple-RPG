@@ -13,7 +13,7 @@ public class You
 	private static int Weap1At;
 	private static int Weap2At;
 	
-	public static int getDefense() 
+	public int getDefense() 
 	{
 		return Defense;
 	}
@@ -22,7 +22,7 @@ public class You
 		Defense = defense;
 	}
 
-	public static int getAttack() {
+	public int getAttack() {
 		return Attack;
 	}
 
@@ -38,7 +38,7 @@ public class You
 		Money = money;
 	}
 
-	public static void setHP(int hP) {
+	public void setHP(int hP) {
 		HP = hP;
 	}
 	
@@ -68,27 +68,27 @@ public class You
 	
 	
 
-	public static int getWeap1At() {
+	public int getWeap1At() {
 		return Weap1At;
 	}
 
-	public static void setWeap1At(int weap1At) {
+	public void setWeap1At(int weap1At) {
 		Weap1At = weap1At;
 	}
 
-	public static int getWeap2At() {
+	public int getWeap2At() {
 		return Weap2At;
 	}
 
-	public static void setWeap2At(int weap2At) {
+	public void setWeap2At(int weap2At) {
 		Weap2At = weap2At;
 	}
 
-	public static int getPotion() {
+	public int getPotion() {
 		return potion;
 	}
 
-	public static void setPotion(int potion) {
+	public void setPotion(int potion) {
 		You.potion = potion;
 	}
 
@@ -112,7 +112,7 @@ public class You
 		Weapon2 = weapon;
 	}
 	
-	public static int getHP()
+	public int getHP()
 	{
 		return HP;
 	}
