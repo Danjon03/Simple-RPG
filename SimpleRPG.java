@@ -30,12 +30,12 @@ public class SimpleRPG
 	 
 	 public static JButton attackWeapon2 = new JButton();
 	 public static  JButton attackWeapon1 = new JButton();
-	 
+	 public static  JButton sneak = new JButton();
 	
 	
 	
 	 //objects
-	 public static You you = new You(10, 3, 2, "Blunt Sword", 4, "Mini Blaster", 5, 0, 0, 10);
+	 public static You you = new You(100, 3, 2, "Blunt Sword", 4, "Mini Blaster", 5, 0, 0, 10);
 	 public static Dungeon1 dungeon = new Dungeon1("Sharp Sword", 10, "You enter a cave and see a sign. it reads... \n"
 			 + " Beware traveler many dangers await you. Pass and you will be closer to freedom. You look down and pick up a weapon. "
 			 + "You replace your sword with a Sharp Sword \n"
@@ -106,6 +106,7 @@ public class SimpleRPG
 		return n;
 	}
 	
+	public static  int sneakCount = 0;
 	public static void addButtons()
 	{
 		//button 1
@@ -173,7 +174,58 @@ public class SimpleRPG
 			   }
 		 });
 	
-	
+		
+		 sneak.setVisible(true);
+		 sneak.setSize(150, 50);
+		 sneak.setLocation(250, 160);
+		 sneak.setText("Sneak");
+		
+		 //drinkPotion.setEnabled(dead);
+		 panel.add(sneak);
+		 sneak.addActionListener(new ActionListener()
+		 {
+		   public void actionPerformed(ActionEvent e)
+		   {
+			   
+			   if(sneakCount != 0)
+			   {
+				   area.setText("The Monsters already see you. You can't sneak around them");
+				   System.out.println(sneakCount);
+			   }
+			   else
+			   {
+				   if(currentEnemy >= monsterArray.size() - 2)
+				   {
+					  
+					   area.setText("You can't sneak around these monsters");
+				   }
+				   else
+				   {
+					  int sneakDamage = D4() + D4() - you.getDefense();
+					 
+					   
+					   if(D20() >= 15 )
+					   {
+						   area.setText("You sneaked around a group of monsters");
+						   currentEnemy = currentEnemy + 3;
+						   targetArea.setText(monsterArray.get(currentEnemy).getName());
+						  
+					   }
+					   else
+					   {
+						   area.setText("You were seen trying to sneak around a group of monsters and you took " + sneakDamage + " damage");
+						   you.setHP(you.getHP() - sneakDamage);
+						   sneakCount = 3;
+						  
+					   }
+					
+				   }
+			   }
+			   
+			   showStats();
+			   
+		   }
+		 });
 	
 	
 	
@@ -219,9 +271,11 @@ public class SimpleRPG
 					if(inDungeon == true)
 					{
 						fightBoss();
+						sneak.setEnabled(false);
 					}
 					else
 					{
+						sneakCount = 0;
 						area.setText(dungeon.getEntryText());
 						attackWeapon1.setText(dungeon.getEnterWeapon());
 						you.setWeap1At(6);
@@ -242,7 +296,13 @@ public class SimpleRPG
 				//if monster is dead move on to the next monster
 					if(monsterArray.get(currentEnemy).getHP() <= 0)
 					{
+						if(sneakCount != 0)
+						{
+							sneakCount--;
+						}
+						
 						currentEnemy++;
+						
 						targetArea.setText(monsterArray.get(currentEnemy).getName());
 						area.setText("You killed the " + monsterArray.get(currentEnemy - 1).getName());
 					}
@@ -373,16 +433,25 @@ public class SimpleRPG
 		}
 		else
 		{
-			if(D4() >= 90)
-			{
-				area.setText("You dodged the " + Dungeon1.getBoss().getName() + "'s attack. You dealt " + yourDamage + " damage");
-			}
-			else
-			{
-				you.setHP(you.getHP() - Dungeon1.getBoss().getAttack());
-				area.setText("You took " + Dungeon1.getBoss().getAttack() + " from the Flame Ogre and you dealt " + yourDamage + " damage" );
-				showStats();
-			}
+			
+			
+				if(D4() >= 90)
+				{
+					area.setText("You dodged the " + Dungeon1.getBoss().getName() + "'s attack. You dealt " + yourDamage + " damage");
+				}
+				else
+				{
+					you.setHP(you.getHP() - Dungeon1.getBoss().getAttack());
+					area.setText("You took " + Dungeon1.getBoss().getAttack() + " from the Flame Ogre and you dealt " + yourDamage + " damage" );
+					showStats();
+					
+					if(you.getHP() <= 0)
+					{
+						area.setText("You were killed at the hands of the Flame Ogre");
+						end();
+					}
+				}
+			
 		}
 		}
 		times++;
