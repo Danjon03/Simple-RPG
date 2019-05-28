@@ -2,23 +2,41 @@ package simpleRPG;
 
 public class You 
 {
-	private static int HP;
+	private int HP;
 	private static int Defense;
-	private static int Attack;
-	private static String Weapon1;
-	private static String Weapon2;
-	private static int Money;
-	private static int XP;
-	private static int potion;
-	private static int Weap1At;
-	private static int Weap2At;
+	private int Attack;
+	private Weapons weapon1;
+	private RangedWeapon weapon2;
+	private int Money;
+	
+	private int potion;
+	
+	private int dodge;
+	
+	
+	public You(int YourHP, int YourDefense, int YourAttack, Weapons Weapon1, RangedWeapon Weapon2, int YourMoney, int HealthPotions, int Yourdodging) 
+	{
+		HP = YourHP;
+		Defense = YourDefense;
+		Attack = YourAttack;
+		weapon1 = Weapon1;
+		weapon2 = Weapon2;
+		
+		Money = YourMoney;
+		
+		potion = HealthPotions;
+		
+		dodge = Yourdodging;
+	}
+	
+	
 	
 	public int getDefense() 
 	{
 		return Defense;
 	}
-
-	public static void setDefense(int defense) {
+ 
+	public void setDefense(int defense) {
 		Defense = defense;
 	}
 
@@ -26,95 +44,61 @@ public class You
 		return Attack;
 	}
 
-	public static void setAttack(int attack) {
+	public void setAttack(int attack) {
 		Attack = attack;
 	}
 
-	public static int getMoney() {
+	public int getMoney() {
 		return Money;
 	}
 
-	public static void setMoney(int money) {
+	public void setMoney(int money) {
 		Money = money;
 	}
 
 	public void setHP(int hP) {
 		HP = hP;
 	}
-	
-	public static void setXP(int xP)
-	{
-		XP = xP;
-	}
-	
-	public static int getXP()
-	{
-		return XP;
-	}
-
-	public You(int YourHP, int YourDefense, int YourAttack, String YourWeapon1, int Weapon1Attack,  String YourWeapon2, int Weapon2Attack, int YourMoney, int YourXP, int HealthPotions) 
-	{
-		HP = YourHP;
-		Defense = YourDefense;
-		Attack = YourAttack;
-		Weapon1 = YourWeapon1;
-		Weapon2 = YourWeapon2;
-		Money = YourMoney;
-		XP = YourXP;
-		potion = HealthPotions;
-		Weap1At = Weapon1Attack;
-		Weap2At = Weapon2Attack;
-	}
-	
-	
-
-	public int getWeap1At() {
-		return Weap1At;
-	}
-
-	public void setWeap1At(int weap1At) {
-		Weap1At = weap1At;
-	}
-
-	public int getWeap2At() {
-		return Weap2At;
-	}
-
-	public void setWeap2At(int weap2At) {
-		Weap2At = weap2At;
-	}
 
 	public int getPotion() {
 		return potion;
 	}
 
-	public void setPotion(int potion) {
-		You.potion = potion;
+	public void setPotion(int potions) {
+		potion = potions;
 	}
 
-	
-	
-	public static String getWeapon1() {
-		return Weapon1;
+	public Weapons getWeapon1() {
+		
+		return weapon1;
+		
 	}
 
-	public static String getWeapon2() {
-		return Weapon2;
+	public RangedWeapon getWeapon2() {
+		return weapon2;
 	}
 
-	public static void setWeapon1(String weapon )
+	public void setWeapon1(Weapons weapon )
 	{
-		Weapon1 = weapon;
+		weapon1 = weapon;
 	}
 	
-	public static void setWeapon2(String weapon)
+	public void setWeapon2(RangedWeapon weapon)
 	{
-		Weapon2 = weapon;
+		weapon2 = weapon;
 	}
 	
 	public int getHP()
 	{
 		return HP;
+	}
+
+	public int getDodge() {
+		return dodge;
+	}
+
+	public void setDodge(int dodgeing) {
+		dodge = dodgeing;
 	}
 	
 	

@@ -5,17 +5,14 @@ package simpleRPG;
 public class Dungeon1 extends SimpleRPG
 {
 
-	private String EnterWeapon = "Sharp Sword";
-	private static int EnemyNum = 10;
-	private static String entrytext = "You enter a cave and see a sign. it reads... \n"
-			 + " Beware traveler many dangers await you. Pass and you will be closer to freedom. You look down and pick up a weapon. "
-			 + "You replace your sword with a Sharp Sword \n"
-			 + "You instantly look up to see a monster.";
+	private Weapons EnterWeapon;
+	private static int EnemyNum;
+	private static String entrytext;
 	private String treasure = "Small Blaster";
-	private static Monsters boss;
+	private static Boss boss;
 	
 	
-	public Dungeon1(String EW, int enemyNum, String text, String Treasure, Monsters Boss)
+	public Dungeon1(Weapons EW, int enemyNum, String text, String Treasure, Boss Boss)
 	{
 		EnterWeapon = EW;
 		EnemyNum = enemyNum;
@@ -35,12 +32,12 @@ public class Dungeon1 extends SimpleRPG
 	}
 
 
-	public String getEnterWeapon() {
+	public Weapons getEnterWeapon() {
 		return EnterWeapon;
 	}
 
 
-	public void setEnterWeapon(String enterWeapon) {
+	public void setEnterWeapon(Weapons enterWeapon) {
 		EnterWeapon = enterWeapon;
 	}
 
@@ -65,12 +62,12 @@ public class Dungeon1 extends SimpleRPG
 	}
 
 
-	public static Monsters getBoss() {
+	public Boss getBoss() {
 		return boss;
 	}
 
 
-	public void setBoss(Monsters Boss) {
+	public void setBoss(Boss Boss) {
 		boss = Boss;
 	}
 	
