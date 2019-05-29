@@ -105,7 +105,8 @@ public class SimpleRPG
 		 targetArea.setText(monsterArray.get(0).getName());
 		 
 		 showStats();
-		 setupNewLocation();
+		//uncomment this line to move location in game
+		 //setupNewLocation();
 	 }
 
 	//for throws
@@ -234,7 +235,14 @@ public class SimpleRPG
 					   else
 					   {
 						   area.setText("You were seen trying to sneak around a group of monsters and you took " + sneakDamage + " damage");
-						   mainCharacter.setHP(mainCharacter.getHP() - sneakDamage);
+						   
+						   if(sneakDamage > 0)
+						   {
+							   area.setText("You were seen trying to sneak around a group of monsters and you took 0 damage");
+							   mainCharacter.setHP(mainCharacter.getHP() - sneakDamage);
+						   }
+						   
+						   
 						   sneakCount = 3;
 						  
 					   }
@@ -453,7 +461,7 @@ public class SimpleRPG
 				else
 				{
 					mainCharacter.setHP(mainCharacter.getHP() - (dungeon.getBoss().getAttack() - mainCharacter.getDefense()));
-					area.setText("You took " + dungeon.getBoss().getAttack() + " from the " + dungeon.getBoss().getName() + " and you dealt " + yourDamage + " damage" );
+					area.setText("You took " + (dungeon.getBoss().getAttack() - mainCharacter.getDefense()) + " from the " + dungeon.getBoss().getName() + " and you dealt " + yourDamage + " damage" );
 					showStats();
 					
 					if(mainCharacter.getHP() <= 0)
