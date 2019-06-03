@@ -44,4 +44,38 @@ public class Boss extends SimpleRPG
 		return defense;
 	}
 	
+	public void attackPlayer()
+	{
+		System.out.println("Using attackPlayer");
+		currentBoss.setHP(currentBoss.getHP() - yourDamage);
+		System.out.println(currentBoss.getHP());
+		if(currentBoss.getHP() <= 0)
+		{
+			currentBoss.getHP();
+			setupNewLocation();
+		}
+		else
+		{	
+				if(D4() >= 90)
+				{
+					area.setText("You dodged the " + currentBoss.getName() + "'s attack. You dealt " + yourDamage + " damage");
+				}
+				else
+				{
+					mainCharacter.setHP(mainCharacter.getHP() - (currentBoss.getAttack() - mainCharacter.getDefense()));
+					area.setText("You took " + (currentBoss.getAttack() - mainCharacter.getDefense()) + " from the " + currentBoss.getName() + 
+							" and you dealt " + yourDamage + " damage" );
+					showStats();
+					
+					if(mainCharacter.getHP() <= 0)
+					{
+						area.setText("You were killed at the hands of the " + currentBoss.getName());
+						end();
+					}
+				}
+			
+		}
+	
+	
+	}
 }

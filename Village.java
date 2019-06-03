@@ -32,8 +32,8 @@ public class Village extends SimpleRPG
 	}
 
 
-	public String getInShops() {
-		return InShops.getName();
+	public Armor getInShops() {
+		return InShops;
 	}
 	
 	
