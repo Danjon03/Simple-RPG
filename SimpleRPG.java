@@ -2,7 +2,7 @@ package simpleRPG;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -60,6 +60,9 @@ public class SimpleRPG
 	
 	 
 	 private static boolean fightBoss = false;
+	 
+	 
+	
 	 
 	 //variables that help the program to know where you are in the game
 	 
@@ -127,7 +130,7 @@ public class SimpleRPG
 		 showStats();
 		 inDungeon = true;
 		//uncomment the line below to move location in game
-		 //setupNewLocation();
+		//setupNewLocation();
 	 }
 
 	//for throws
@@ -150,61 +153,60 @@ public class SimpleRPG
 	public static  int sneakCount = 0;
 	public static void addButtons()
 	{
-		//button 1
+		
+	//button 1
 		
 		 attackWeapon1.setVisible(true);
 		 attackWeapon1.setSize(150, 50);
 		 attackWeapon1.setLocation(50, 100);
-		
 		 attackWeapon1.setText(mainCharacter.getWeapon1().getName());
-		
 		 attackWeapon1.setEnabled(true);
 		 panel.add(attackWeapon1);
-		 attackWeapon1.addActionListener(new ActionListener()
+		
+		 if(attackWeapon1.getActionListeners().length < 1)
+		 {
+			 attackWeapon1.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
 		   {
-			   
-			   
-				  
 					attackMonster(1);
-				
-			   
 		   }
-		   
-		 });
-		 
-		 //button 2
+
+		});
+		 }
+	//button 2
 		 
 		 
 		 attackWeapon2.setVisible(true);
 		 attackWeapon2.setSize(150, 50);
 		 attackWeapon2.setLocation(250, 100);
 		 attackWeapon2.setText(mainCharacter.getWeapon2().getName());
-		 
 		 attackWeapon2.setEnabled(true);
 		 panel.add(attackWeapon2);
-		 attackWeapon2.addActionListener(new ActionListener()
+		
+		 if(attackWeapon2.getActionListeners().length < 1)
+		 {		 
+			 attackWeapon2.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
 		   {			   				  			  			
-			  
-				  
-					attackMonster(2);
-				
-			 				   		    
+			   	System.out.print("button pressed ");
+			   	attackMonster(2);
+			   	System.out.print("Count of listeners: " + ((JButton) attackWeapon2).getActionListeners().length + " ");
 		   }
 		 });
-	
+		 }
 		 //drink a potion
 		 
 		 drinkPotion.setVisible(true);
 		 drinkPotion.setSize(150, 50);
 		 drinkPotion.setLocation(50, 160);
 		 drinkPotion.setText("Drink a Potion");
-		 //drinkPotion.setEnabled(dead);
 		 panel.add(drinkPotion);
-		 drinkPotion.addActionListener(new ActionListener()
+		
+		 if(drinkPotion.getActionListeners().length < 1)
+		 {
+			 drinkPotion.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
 		   {
@@ -221,16 +223,17 @@ public class SimpleRPG
 			   }
 			   }
 		 });
-	
+		 }
 		
 		 sneak.setVisible(true);
 		 sneak.setSize(150, 50);
 		 sneak.setLocation(250, 160);
 		 sneak.setText("Sneak");
-		
-		
 		 panel.add(sneak);
-		 sneak.addActionListener(new ActionListener()
+		 
+		 if(drinkPotion.getActionListeners().length < 1)
+		 {
+			 sneak.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
 		   {
@@ -281,9 +284,7 @@ public class SimpleRPG
 			   
 		   }
 		 });
-	
-	
-	
+		 }
 	
 	}
     
@@ -324,7 +325,10 @@ public class SimpleRPG
 				{
 					if(inDungeon == true)
 					{
+						
+						//System.out.println(" Enter setup new location");
 						setupNewLocation();
+						//System.out.println(" Exit setup new location");
 						sneak.setEnabled(false);
 					}
 					else
@@ -407,6 +411,7 @@ public class SimpleRPG
 	 
 	public static void createNewStage()
 	{
+		monsterArray.clear();
 		
 		for(int i = 0; i < numberOfEnemiesInArea; i++)
 		{
@@ -512,15 +517,18 @@ public class SimpleRPG
 	
 	public static void addVillageButtons()
 	{
+	
+	// Buy Item
 		 buy.setVisible(true);
 		 buy.setSize(150, 50);
 		 buy.setEnabled(false);
 		 buy.setLocation(250, 100);
 		 buy.setText("Buy Item");
-		 
-		 
 		 panel.add(buy);
-		 buy.addActionListener(new ActionListener()
+		 
+		 if(buy.getActionListeners().length < 1)
+		 {
+			 buy.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
 		   {			   				  			  			
@@ -540,18 +548,18 @@ public class SimpleRPG
 				visitShop.setEnabled(false);
 		   }
 		 });
-		
-		
-		
-		
-		
+		 }
+	
+	// Visit Shop
 		visitShop.setVisible(true);
 		visitShop.setSize(150, 50);
 		visitShop.setLocation(50, 100);
 		visitShop.setText("Visit Shop");
-		
 		visitShop.setEnabled(true);
 		 panel.add(visitShop);
+		 
+		 if(visitShop.getActionListeners().length < 1)
+		 {
 		 visitShop.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
@@ -572,49 +580,49 @@ public class SimpleRPG
 		   }
 		   
 		 });
-		 
-		 //button 2
-		 
-		 
-		
+		 }
 	
-		 //drink a potion
-		
+	//Talk to a Stranger
 		 talkToStranger.setVisible(true);
 		 talkToStranger.setSize(150, 50);
 		 talkToStranger.setLocation(50, 160);
 		 talkToStranger.setText("Talk to a Stranger");
-		 //drinkPotion.setEnabled(dead);
 		 panel.add(talkToStranger);
-		 talkToStranger.addActionListener(new ActionListener()
+		 
+		 if(talkToStranger.getActionListeners().length < 1)
+		 {
+			 talkToStranger.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
 		   {
 			   area.setText("One of the locals gives you a wierd look and walks away. He must not like strangers.");
-			
-			   
-			   
 		   }
 		 });
-	
+		 }
+		 
+	//Exit The village
 		 exitVillage.setVisible(true);
 		 exitVillage.setSize(150, 50);
 		 exitVillage.setLocation(250, 160);
 		 exitVillage.setText("Exit Village");
-		 //drinkPotion.setEnabled(dead);
 		 panel.add(exitVillage);
-		 exitVillage.addActionListener(new ActionListener()
-		 {
-		   public void actionPerformed(ActionEvent e)
-		   {
-			  
-			 setupNewLocation();
-			  
-			   
-		   }
-		 });
 		 
-	}
+		if(exitVillage.getActionListeners().length < 1)
+		{
+			 exitVillage.addActionListener(new ActionListener()
+			 {
+			   public void actionPerformed(ActionEvent e)
+			   {
+				  
+				 setupNewLocation();
+				  
+				   
+			   }
+			 });
+		}
+	
+	
+	}//end of addVillageButtons
 	
 	public static void setupNewLocation() 
 	{
@@ -643,6 +651,7 @@ public class SimpleRPG
 			location = "flameOgre";
 			inDungeon = false;
 			fightBoss = true;
+			System.out.println("Error dungeon1");
 		}
 		else if(location == "flameOgre")
 		{
@@ -659,35 +668,28 @@ public class SimpleRPG
 			
 			location = "afterTamori";
 			exitVillage();
+			System.out.println("Error Tamori Village");
 			inDungeon = true;
 		}
 		else if(location == "afterTamori")
 		{
-			
-			
-			
-			//text
 			waitSecs(0, "You walk into the ruins of the abandoned fort. Cobwebs are everywhere. You hear an ominous hissing.", false);
 			
-			waitSecs(4000, "There is a corpse of a man holding 10 potions. You take them", false);
+			waitSecs(3000, "There is a corpse of a man holding 10 potions. You take them", false);
 			
-			waitSecs(8000, "Then you look to the ceiling, where a Giant Spider sits, ready to pounce.", true);
+			waitSecs(6000, "Then you look to the ceiling, where a Giant Spider sits, ready to pounce.", true);
 			
-			
-			inDungeon = false;
 			mainCharacter.setPotion(mainCharacter.getPotion() + 10);
-			
 			currentBoss = giantSpider;
-			location = "inAbandonedFort";
-			
+			location = "inAbandonedFort/SamandoVillage";
+			inDungeon = false;
 			fightBoss = true;
-			System.out.println(area.getText());
 			
 		}
 		else if(location == "inAbandonedFort/SamandoVillage")
 		{
 			
-			
+			fightBoss = false;
 			waitSecs(0, "You pass the corpse of the spider and look in a box. The box has a note inside. it reads: "
 					+ "\nStop anyone from passing. If to many get to the castle all will be for nothing.", false);
 			
@@ -695,25 +697,22 @@ public class SimpleRPG
 			
 			waitSecs(6000, "There is a man outside who tells you a local legend.", false);
 			
-			waitSecs(9000, "There is a weapons within the Dragon Roost that supposedly has incredible power. "
+			waitSecs(9000, "There is a weapon that supposedly has incredible power. "
 					+ "\nSamando, The Sa-Tow Village Leader, might have some information", false);
 			
 			waitSecs(12000, "You enter Sa-Tow Village and speak to Samando", false);
 			
 			waitSecs(15000, "He tells you that the weapon you heard from the traveler lies to the north in the Dragon Roosts", true);
 			
-			location = "saTowVillage";
-			setupNewLocation();
-		}
-		else if(location == "saTowVillage")
-		{
 			currentVillage = saTowVillage;
 			villageNumber = 2;
 			enterVillage();
+			
 		}
-	
+		
 	}
 
+	
 	public static void giveArmorBonus(String armor)
 	{
 		if(armor == "Stealthy Cloak")
@@ -807,6 +806,7 @@ public class SimpleRPG
 		exitVillage.setEnabled(true);
 	}
 
+	
 	public static void addArmorButtons()
 	{
 		switchArmor.setVisible(true);
@@ -815,6 +815,9 @@ public class SimpleRPG
 		switchArmor.setSize(300, 50);
 		switchArmor.setText("Switch to Travelers Chestplate");
 		panel.add(switchArmor);
+		
+		if(switchArmor.getActionListeners().length < 1)
+		{
 		switchArmor.addActionListener(new ActionListener()
 		 {
 		   public void actionPerformed(ActionEvent e)
@@ -838,7 +841,9 @@ public class SimpleRPG
 			   
 		   }
 		 });
-	}
+		}
+		
+		}
 
 
 }//end Class
