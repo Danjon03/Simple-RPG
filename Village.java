@@ -37,7 +37,10 @@ public class Village extends SimpleRPG
 	}
 	
 	
-	
+	public void setInShops(Armor inShop)
+	{
+		InShops = inShop;
+	}
 	
 	
 	
